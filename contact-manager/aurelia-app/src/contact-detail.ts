@@ -45,6 +45,8 @@ export class ContactDetail {
       this.contact = <Contact>contact;
       this.routeConfig.navModel.setTitle(this.contact.firstName);
       this.originalContact = JSON.parse(JSON.stringify(this.contact));
+
+      // when this component loaded, publish event that the loaded Contact is currently in view.
       this.ea.publish(new ContactViewed(this.contact));
     });
   }
@@ -61,6 +63,13 @@ export class ContactDetail {
       let result = confirm('You have unsaved changes. Are you sure you wish to leave?');
 
       if (!result) {
+        // when we switched/click to another contact details,
+        // there is a delegated `click.delegate()` function that sets
+        // the currently selected contact to that contact 
+        // via `$parent.select(contact)` hence,
+        // even the navigation was cancelled, that `select()` function proceeds.
+        // so we need to publish `ContactViewed` event and in our `contact-details` component,
+        // we need to listen to this event and change the `this.selectedId` accordingly.
         this.ea.publish(new ContactViewed(this.contact));
       }
 
