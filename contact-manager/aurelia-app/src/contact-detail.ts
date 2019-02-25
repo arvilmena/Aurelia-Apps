@@ -1,6 +1,8 @@
 import { WebAPI } from './web-api';
 import {inject} from 'aurelia-framework';
 import {areEqual} from './utility';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {ContactUpdated, ContactViewed} from './message';
 
 interface Contact {
   firstName: string;
@@ -8,17 +10,17 @@ interface Contact {
   email: string;
 }
 
-@inject(WebAPI) // Dependency injecting.
+@inject(WebAPI, EventAggregator) // Dependency injecting.
 export class ContactDetail {
   routeConfig;
   contact: Contact;
   originalContact: Contact;
 
-  constructor(private api: WebAPI) {}
+  constructor(private api: WebAPI, private ea: EventAggregator) {}
 
   // before `router` is about to activate the component.
   // router passes the route parameters to component and accessible via routeConfig.
-  activate(params, routeConfig) { 
+  activate(params, routeConfig) {
     this.routeConfig = routeConfig;
 
     // ------------
@@ -43,6 +45,7 @@ export class ContactDetail {
       this.contact = <Contact>contact;
       this.routeConfig.navModel.setTitle(this.contact.firstName);
       this.originalContact = JSON.parse(JSON.stringify(this.contact));
+      this.ea.publish(new ContactViewed(this.contact));
     });
   }
   
@@ -55,7 +58,13 @@ export class ContactDetail {
   // is cancelled.
   canDeactivate() {
     if (!areEqual(this.originalContact, this.contact)) {
-      return confirm('You have unsaved changes. Are you sure you wish to leave?');
+      let result = confirm('You have unsaved changes. Are you sure you wish to leave?');
+
+      if (!result) {
+        this.ea.publish(new ContactViewed(this.contact));
+      }
+
+      return result;
     }
     return true;
   }
@@ -72,6 +81,7 @@ export class ContactDetail {
       this.contact = <Contact>contact;
       this.routeConfig.navModel.setTitle(this.contact.firstName);
       this.originalContact = JSON.parse(JSON.stringify(this.contact));
+      this.ea.publish(new ContactUpdated(this.contact));
     });
   }
 }
