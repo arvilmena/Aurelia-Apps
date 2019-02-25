@@ -9,3 +9,4 @@ Following the guide from: [https://aurelia.io/docs/tutorials](https://aurelia.io
 
 ### Apps
 - [Todo App](https://aurelia.io/docs/tutorials/creating-a-todo-app) => [/todo-app](todo-app)
+- [Contact Manager Tutorial](https://aurelia.io/docs/tutorials/creating-a-contact-manager) => [/contact-manager](contact-manager)
