@@ -39,6 +39,7 @@
       </form>
 
       <div>
+          <!-- invoke save() on click, toggle `disabled` state depending on canSave prop -->
           <button class="btn btn-success float-right" click.delegate="save()" disabled.bind="!canSave">Save</button>
       </div>
 
