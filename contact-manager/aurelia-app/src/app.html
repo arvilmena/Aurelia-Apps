@@ -1,5 +1,6 @@
 <template>
   <require from="./styles.css"></require>
+  <require from="./contact-list"></require>
 
   <nav class="navbar navbar-light bg-light fixed-top" role="navigation">
     <a href="#" class="navbar-brand">
@@ -10,7 +11,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-4">Contact List Placeholder</div>
+      <contact-list class="col-md-4"></contact-list>
       <router-view class="col-md-8"></router-view>
     </div>
   </div>
