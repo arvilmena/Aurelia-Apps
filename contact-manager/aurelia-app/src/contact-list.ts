@@ -9,8 +9,12 @@ export class ContactList {
   selectedId = 0;
 
   constructor(private api: WebAPI, private ea: EventAggregator) {
-    ea.subscribe(ContactViewed, msg => this.select(msg.contact));
+    ea.subscribe(ContactViewed, msg => {
+      // console.log('subscribed ContactViewed:', msg);
+      this.select(msg.contact);
+    });
     ea.subscribe(ContactUpdated, msg => {
+      // console.log('subscribed ContactUpdated:', msg);
       let id = msg.contact.id;
       let found = this.contacts.find(x => x.id === id);
       Object.assign(found, msg.contact);
