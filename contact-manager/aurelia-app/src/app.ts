@@ -2,7 +2,7 @@ import {Router, RouterConfiguration} from 'aurelia-router';
 import {inject, PLATFORM} from 'aurelia-framework';
 import { WebAPI } from './web-api';
 
-@inject(WebAPI)
+@inject(WebAPI) // injecting WebAPI to app.ts as this.api property, so that in our view we can use `api.isRequesting`
 export class App {
   router: Router;
 
